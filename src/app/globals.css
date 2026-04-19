@@ -1,26 +1,78 @@
 @import "tailwindcss";
+@variant dark (&:where(.dark, .dark *)); 
+@theme {
+  /* ── Weather condition colors ── */
+  --color-sunny:        #F59E0B;
+  --color-sunny-light:  #FEF3C7;
+  --color-sunny-dark:   #92400E;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-rainy:        #3B82F6;
+  --color-rainy-light:  #EFF6FF;
+  --color-rainy-dark:   #1E3A5F;
+
+  --color-cloudy:       #6B7280;
+  --color-cloudy-light: #F3F4F6;
+  --color-cloudy-dark:  #1F2937;
+
+  --color-stormy:       #7C3AED;
+  --color-stormy-light: #EDE9FE;
+  --color-stormy-dark:  #2E1065;
+
+  --color-snowy:        #BAE6FD;
+  --color-snowy-light:  #F0F9FF;
+  --color-snowy-dark:   #0C4A6E;
+
+  /* ── Typography ── */
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* ── Custom animations ── */
+  --animate-spin-slow:  spin 3s linear infinite;
+  --animate-fade-in:    fadeIn 0.5s ease-in-out;
+  --animate-slide-up:   slideUp 0.4s ease-out;
+  --animate-pulse-slow: pulse 4s ease-in-out infinite;
+
+  /* ── Custom radius ── */
+  --radius-4xl: 2rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── Keyframes for custom animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ── Base styles ── */
+@layer base {
+  body {
+    @apply bg-gray-50 dark:bg-gray-950;
+    @apply text-gray-900 dark:text-gray-100;
+    @apply transition-colors duration-300;
   }
+
+  h1 { @apply text-4xl font-bold tracking-tight; }
+  h2 { @apply text-2xl font-semibold; }
+  h3 { @apply text-lg font-medium; }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── Reusable component classes ── */
+@layer components {
+  .weather-card {
+    @apply rounded-3xl p-6 shadow-sm
+           border border-white/20
+           backdrop-blur-sm
+           transition-all duration-300
+           hover:shadow-md hover:-translate-y-0.5;
+  }
+
+  .weather-badge {
+    @apply inline-flex items-center gap-1.5
+           px-3 py-1 rounded-full
+           text-sm font-medium;
+  }
 }
