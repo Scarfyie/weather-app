@@ -1,24 +1,61 @@
+'use client'
+
+import { useEffect } from 'react'
+import { useWeather } from '@/hooks/useWeather'
+import { CurrentWeatherCard } from '@/components/weather/CurrentWeather'
+import { ForecastCards }       from '@/components/weather/ForecastCards'
+import { SearchBar }           from '@/components/weather/SearchBar'
+import { WeatherSkeleton }     from '@/components/weather/WeatherSkeleton'
+import { ThemeToggle }         from '../components/ThemeToggle'
+import { AlertCircle }         from 'lucide-react'
+
+const DEFAULT_CITY = 'Manila'
+const UNIT         = 'metric'
+
 export default function Home() {
+  const { data, error, loading, fetch } = useWeather()
+
+  // Load default city on mount
+  useEffect(() => {
+    fetch(DEFAULT_CITY, UNIT)
+  }, [fetch])
+
   return (
-    <main className="min-h-screen flex items-center justify-center bg-rainy-light">
-      <div className="weather-card bg-white dark:bg-gray-800 max-w-sm w-full">
-        <h1 className="text-sunny text-3xl font-bold mb-2">
-          Tailwind v4 ✓
-        </h1>
-        <p className="text-gray-500 dark:text-gray-400">
-          Custom colors and components are working.
-        </p>
-        <div className="mt-4 flex gap-2">
-          <span className="weather-badge bg-rainy-light text-rainy-dark">
-            Rainy
-          </span>
-          <span className="weather-badge bg-sunny-light text-sunny-dark">
-            Sunny
-          </span>
-          <span className="weather-badge bg-stormy-light text-stormy-dark">
-            Stormy
-          </span>
+    <main className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
+      <div className="max-w-3xl mx-auto px-4 py-8 space-y-4">
+
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+            Weather
+          </h1>
+          <ThemeToggle />
         </div>
+
+        {/* Search */}
+        <SearchBar onSearch={city => fetch(city, UNIT)} loading={loading} />
+
+        {/* Error state */}
+        {error && (
+          <div className="flex items-center gap-3 bg-red-50 dark:bg-red-950 
+                          border border-red-200 dark:border-red-800 
+                          rounded-2xl p-4 text-red-600 dark:text-red-400">
+            <AlertCircle className="w-5 h-5 shrink-0" />
+            <p className="text-sm">{error}</p>
+          </div>
+        )}
+
+        {/* Loading state */}
+        {loading && <WeatherSkeleton />}
+
+        {/* Weather data */}
+        {!loading && data && (
+          <div className="space-y-4 animate-fade-in">
+            <CurrentWeatherCard data={data.current}  unit={UNIT} />
+            <ForecastCards      forecast={data.forecast.forecast} unit={UNIT} />
+          </div>
+        )}
+
       </div>
     </main>
   )
