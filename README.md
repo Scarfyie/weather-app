@@ -4,7 +4,7 @@ A full-stack weather application built with Next.js 14, TypeScript, and Tailwind
 Displays real-time weather conditions and a 5-day forecast powered by the OpenWeather API,
 with an AI assistant powered by OpenAI GPT-4o.
 
-**[Live Demo](https://weather-app-scarfyie.vercel.app)** · **[API Docs](https://weather-app-scarfyie.vercel.app/docs)**
+**[Live Demo](https://weather-app-seven-gamma-76.vercel.app)** · **[API Docs](https://weather-app-seven-gamma-76.vercel.app/docs)**
 
 ---
 
