@@ -4,12 +4,12 @@ import { useEffect } from 'react'
 import { useWeather }        from '@/hooks/useWeather'
 import { useRecentSearches } from '@/hooks/useRecentSearches'
 import { CurrentWeatherCard } from '@/components/weather/CurrentWeather'
-import { ForecastCards }      from '@/components/weather/ForecastCards'
-import { HourlyChart }        from '@/components/weather/HourlyChart'
-import { SearchBar }          from '@/components/weather/SearchBar'
-import { WeatherSkeleton }    from '@/components/weather/WeatherSkeleton'
-import { ThemeToggle }        from '@/components/ThemeToggle'
-import { AlertCircle, Clock, X } from 'lucide-react'
+import { ForecastCards }       from '@/components/weather/ForecastCards'
+import { SearchBar }           from '@/components/weather/SearchBar'
+import { WeatherSkeleton }     from '@/components/weather/WeatherSkeleton'
+import { ThemeToggle }         from '../components/ThemeToggle'
+import { AlertCircle }         from 'lucide-react'// 
+import { ChatBot }             from '@/components/weather/ChatBot'
 
 const DEFAULT_CITY = 'Manila'
 const UNIT         = 'metric'
@@ -96,6 +96,12 @@ export default function Home() {
         )}
 
       </div>
+
+      <ChatBot
+          weather={data?.current  ?? null}
+          forecast={data?.forecast.forecast ?? null}
+        />
+        
     </main>
   )
 }
