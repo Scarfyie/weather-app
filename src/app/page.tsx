@@ -1,15 +1,16 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useWeather }        from '@/hooks/useWeather'
-import { useRecentSearches } from '@/hooks/useRecentSearches'
+import { useWeather }         from '@/hooks/useWeather'
+import { useRecentSearches }  from '@/hooks/useRecentSearches'
 import { CurrentWeatherCard } from '@/components/weather/CurrentWeather'
-import { ForecastCards }       from '@/components/weather/ForecastCards'
-import { SearchBar }           from '@/components/weather/SearchBar'
-import { WeatherSkeleton }     from '@/components/weather/WeatherSkeleton'
-import { ThemeToggle }         from '../components/ThemeToggle'
-import { AlertCircle }         from 'lucide-react'// 
-import { ChatBot }             from '@/components/weather/ChatBot'
+import { ForecastCards }      from '@/components/weather/ForecastCards'
+import { HourlyChart }        from '@/components/weather/HourlyChart'
+import { SearchBar }          from '@/components/weather/SearchBar'
+import { WeatherSkeleton }    from '@/components/weather/WeatherSkeleton'
+import { ThemeToggle }        from '@/components/ThemeToggle'
+import { ChatBot }            from '@/components/weather/ChatBot'
+import { AlertCircle, Clock, X } from 'lucide-react'
 
 const DEFAULT_CITY = 'Manila'
 const UNIT         = 'metric'
@@ -18,6 +19,7 @@ export default function Home() {
   const { data, error, loading, fetch } = useWeather()
   const { searches, addSearch, clearSearches } = useRecentSearches()
 
+  // Load default city on mount
   useEffect(() => {
     fetch(DEFAULT_CITY, UNIT)
   }, [fetch])
@@ -27,7 +29,7 @@ export default function Home() {
     addSearch(city)
   }
 
-  // Flatten all forecast items for hourly chart
+  // Flatten all forecast intervals for the hourly chart
   const hourlyItems = data?.forecast.forecast.flatMap(d => d.items) ?? []
 
   return (
@@ -83,25 +85,26 @@ export default function Home() {
           </div>
         )}
 
-        {/* Loading */}
+        {/* Loading state */}
         {loading && <WeatherSkeleton />}
 
         {/* Weather data */}
         {!loading && data && (
           <div className="space-y-4 animate-fade-in">
-            <CurrentWeatherCard data={data.current} unit={UNIT} />
-            <HourlyChart items={hourlyItems} unit={UNIT} />
-            <ForecastCards forecast={data.forecast.forecast} unit={UNIT} />
+            <CurrentWeatherCard data={data.current}           unit={UNIT} />
+            <HourlyChart        items={hourlyItems}           unit={UNIT} />
+            <ForecastCards      forecast={data.forecast.forecast} unit={UNIT} />
           </div>
         )}
 
       </div>
 
+      {/* AI Chatbot — floats bottom-right, receives live weather context */}
       <ChatBot
-          weather={data?.current  ?? null}
-          forecast={data?.forecast.forecast ?? null}
-        />
-        
+        weather={data?.current          ?? null}
+        forecast={data?.forecast.forecast ?? null}
+      />
+
     </main>
   )
 }
