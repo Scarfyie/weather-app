@@ -1,0 +1,14 @@
+{
+  "css.customData": [],
+  "css.validate": false,
+  "css.lint.unknownAtRules": "ignore",
+  "scss.validate": false,
+  "scss.lint.unknownAtRules": "ignore",
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+  "tailwindCSS.experimental.configFile": null,
+  "files.associations": {
+    "*.css": "tailwindcss"
+  }
+}
